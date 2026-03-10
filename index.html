@@ -559,6 +559,126 @@
     }
     .footer-meta { font-size: 0.75rem; color: var(--t3); letter-spacing: 0.06em; text-transform: uppercase; }
 
+    /* ─── MOBILE ─────────────────────────────────────────── */
+
+    /* Tablet — 768px */
+    @media (max-width: 768px) {
+      /* Nav */
+      .nav { padding: 0 20px; gap: 12px; height: 48px; }
+      .nav-ver { display: none; }
+      .nav-link { font-size: 0.68rem; padding: 4px 9px; }
+
+      /* Hero */
+      .hero { min-height: 80vh; padding: 90px 0 60px; }
+      .orb1 { width: 400px; height: 400px; top: -150px; left: -150px; }
+      .orb2 { width: 300px; height: 300px; right: -80px; }
+      .orb3 { width: 220px; height: 220px; }
+      .hero-eyebrow { font-size: 0.62rem; padding: 5px 12px; margin-bottom: 24px; }
+      .hero-sub { font-size: 0.95rem; margin-bottom: 36px; }
+      .hero-stats { flex-wrap: wrap; gap: 0; }
+      .hero-stat { padding: 12px 24px; }
+      .hero-stat-n { font-size: 1.8rem; }
+      .hero-stat-l { font-size: 0.62rem; }
+      .hero-stat:last-child { border-right: 1px solid var(--border2); }
+
+      /* Sections */
+      .sec { padding: 52px 0; }
+      .sec-head { gap: 20px; margin-bottom: 32px; }
+      .sec-num { font-size: 3.2rem; width: 56px; }
+      .sec-title { font-size: 1.4rem; }
+      .sec-desc { font-size: 0.88rem; }
+
+      /* Panels */
+      .panel { padding: 18px 18px; }
+
+      /* Alert rows */
+      .alert-row { flex-wrap: wrap; gap: 10px; }
+      .alert-src { min-width: 0; width: 100%; }
+
+      /* Footer */
+      .footer { padding: 48px 0; }
+      .footer-logo { font-size: 2rem; }
+    }
+
+    /* Mobile — 480px */
+    @media (max-width: 480px) {
+      /* Nav — collapse links to horizontal scroll strip */
+      .nav { padding: 0 16px; gap: 8px; }
+      .nav-brand { font-size: 0.9rem; }
+      .nav-divider { display: none; }
+      .nav-link { font-size: 0.62rem; padding: 3px 8px; }
+
+      /* Hero */
+      .hero { padding: 80px 0 48px; }
+      .hero-eyebrow { display: none; }
+      .hero-title { letter-spacing: -0.04em; line-height: 1.0; }
+      .hero-title .line2 { font-size: 0.6em; margin-top: 6px; }
+      .hero-sub { font-size: 0.88rem; margin-bottom: 28px; max-width: 100%; }
+      .hero-stats { display: grid; grid-template-columns: 1fr 1fr; }
+      .hero-stat {
+        padding: 12px 16px;
+        border-right: 1px solid var(--border2) !important;
+        border-bottom: 1px solid var(--border2);
+      }
+      .hero-stat:nth-child(2n) { border-right: none !important; }
+      .hero-stat:nth-last-child(-n+2) { border-bottom: none; }
+      .hero-stat-n { font-size: 1.6rem; }
+
+      /* Section number — reduce further, stack layout */
+      .sec-head { flex-direction: column; gap: 8px; }
+      .sec-num {
+        font-size: 2rem;
+        width: auto;
+        text-align: left;
+        line-height: 1;
+      }
+      .sec-title { font-size: 1.3rem; }
+      .sec-desc { max-width: 100%; font-size: 0.85rem; }
+
+      /* Cards */
+      .fc { padding: 16px 16px; }
+      .fc-title { font-size: 0.82rem; }
+      .fc-desc { font-size: 0.75rem; }
+
+      /* Pipeline — shrink nodes slightly */
+      .pipe-node { min-width: 90px; padding: 10px 12px; }
+      .pipe-node-l { font-size: 0.62rem; }
+      .pipe-node-s { font-size: 0.55rem; }
+      .pipe-note { font-size: 0.58rem; max-width: 84px; }
+      .pipe-arr { padding: 0 2px; padding-top: 14px; font-size: 0.8rem; }
+
+      /* Info list */
+      .il-row { gap: 10px; padding: 10px 0; }
+      .il-icon { width: 24px; height: 24px; font-size: 0.78rem; }
+      .il-t { font-size: 0.8rem; }
+      .il-d { font-size: 0.74rem; }
+
+      /* Chips */
+      .chip { font-size: 0.65rem; padding: 3px 10px; }
+
+      /* Panels */
+      .panel { padding: 16px; }
+      .panel-title { font-size: 0.72rem; }
+
+      /* Alert flow */
+      .alert-src { font-size: 0.72rem; padding: 8px 12px; }
+      .alert-ch { font-size: 0.68rem; padding: 5px 10px; }
+      .alert-channels { gap: 6px; }
+
+      /* Cancel row inline nodes */
+      .pipe-cancel-row { flex-wrap: wrap; gap: 8px; }
+      .pipe-cancel-note { font-size: 0.6rem; }
+    }
+
+    /* Very small — 360px */
+    @media (max-width: 360px) {
+      .wrap { padding: 0 14px; }
+      .hero-title { font-size: clamp(2.2rem, 10vw, 3rem); }
+      .sec-title { font-size: 1.2rem; }
+      .fg-3,.fg-2 { grid-template-columns: 1fr; }
+      .two { grid-template-columns: 1fr; }
+    }
+
     /* ─── PRINT ──────────────────────────────────────────── */
     @media print {
       body { background:#fff; color:#1e293b; }
