@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cella — Inventory Cellabon Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── RESET ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: #04061a;
+      color: #e2e8f0;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ─── TOKENS ─────────────────────────────────────────── */
+    :root {
+      --purple:  #a855f7;
+      --blue:    #3b82f6;
+      --cyan:    #06b6d4;
+      --green:   #10b981;
+      --amber:   #f59e0b;
+      --red:     #ef4444;
+      --indigo:  #6366f1;
+      --teal:    #14b8a6;
+
+      --bg:       #04061a;
+      --bg2:      #080b22;
+      --surface:  rgba(255,255,255,0.04);
+      --surface2: rgba(255,255,255,0.07);
+      --border:   rgba(255,255,255,0.08);
+      --border2:  rgba(255,255,255,0.14);
+
+      --t1: #f1f5f9;
+      --t2: #94a3b8;
+      --t3: #475569;
+    }
+
+    /* ─── GLASS ──────────────────────────────────────────── */
+    .glass {
+      background: var(--surface);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+    .glass-sm {
+      background: var(--surface);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    /* ─── GRADIENT TEXT ──────────────────────────────────── */
+    .gt {
+      background: linear-gradient(135deg, #c084fc 0%, #818cf8 45%, #60a5fa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .gt-green {
+      background: linear-gradient(135deg, #34d399 0%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ─── LAYOUT ─────────────────────────────────────────── */
+    .wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    @media (max-width: 600px) { .wrap { padding: 0 20px; } }
+
+    /* ─── NAVBAR ─────────────────────────────────────────── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      padding: 12px 40px;
+      background: rgba(4,6,26,0.88);
+      backdrop-filter: blur(50px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+    .nav-brand {
+      font-family: 'Sora', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #c084fc, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      white-space: nowrap;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+    .nav-divider { width: 1px; height: 20px; background: var(--border2); flex-shrink: 0; }
+    .nav-links {
+      display: flex;
+      gap: 2px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      flex: 1;
+    }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-link {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--t3);
+      text-decoration: none;
+      padding: 4px 11px;
+      border-radius: 9999px;
+      transition: all 0.18s;
+      white-space: nowrap;
+    }
+    .nav-link:hover { color: var(--t1); background: var(--surface2); }
+    .nav-link.active { color: #c084fc; background: rgba(168,85,247,0.12); }
+    .nav-ver {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--t3);
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      padding: 3px 10px;
+      border-radius: 9999px;
+      flex-shrink: 0;
+    }
+
+    /* ─── HERO ───────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: 88vh;
+      display: flex;
+      align-items: center;
+      padding: 130px 0 80px;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+    }
+    .orb1 { width:700px; height:700px; top:-300px; left:-250px; background: radial-gradient(circle, rgba(168,85,247,0.18) 0%, transparent 65%); animation: bob 9s ease-in-out infinite; }
+    .orb2 { width:500px; height:500px; top:80px; right:-150px;  background: radial-gradient(circle, rgba(59,130,246,0.14) 0%, transparent 65%); animation: bob 12s ease-in-out infinite; animation-delay:-4s; }
+    .orb3 { width:350px; height:350px; bottom:-100px; left:40%;  background: radial-gradient(circle, rgba(16,185,129,0.10) 0%, transparent 65%); animation: bob 7s ease-in-out infinite; animation-delay:-7s; }
+    @keyframes bob { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-28px) scale(1.04)} }
+
+    /* grid overlay */
+    .hero-bg::after {
+      content:'';
+      position:absolute;
+      inset:0;
+      background-image: linear-gradient(rgba(255,255,255,0.024) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,0.024) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 0%, black 40%, transparent 100%);
+    }
+
+    .hero-inner { position: relative; z-index: 1; }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #a855f7;
+      background: rgba(168,85,247,0.1);
+      border: 1px solid rgba(168,85,247,0.28);
+      padding: 6px 16px;
+      border-radius: 9999px;
+      margin-bottom: 32px;
+    }
+    .hero-eyebrow-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #a855f7;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+
+    .hero-title {
+      font-family: 'Sora', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.8rem, 7vw, 5.8rem);
+      letter-spacing: -0.05em;
+      line-height: 0.98;
+      margin-bottom: 28px;
+    }
+    .hero-title .line2 { display: block; color: var(--t2); font-weight: 300; font-size: 0.65em; letter-spacing: -0.01em; margin-top: 8px; }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--t2);
+      max-width: 520px;
+      line-height: 1.75;
+      margin-bottom: 52px;
+      font-weight: 300;
+    }
+
+    .hero-stats {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+    .hero-stat {
+      padding: 0 32px;
+      border-right: 1px solid var(--border2);
+    }
+    .hero-stat:first-child { padding-left: 0; }
+    .hero-stat:last-child { border-right: none; }
+    .hero-stat-n {
+      font-family: 'Sora', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      background: linear-gradient(135deg, #c084fc, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+    }
+    .hero-stat-l {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--t3);
+      margin-top: 3px;
+    }
+
+    /* ─── SECTION WRAPPER ────────────────────────────────── */
+    .sec {
+      padding: 76px 0;
+      border-top: 1px solid var(--border);
+    }
+    .sec:last-of-type { border-bottom: 1px solid var(--border); }
+
+    .sec-head {
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      margin-bottom: 44px;
+    }
+    .sec-num {
+      font-family: 'Sora', sans-serif;
+      font-weight: 800;
+      font-size: 4.5rem;
+      letter-spacing: -0.07em;
+      line-height: 1;
+      flex-shrink: 0;
+      width: 72px;
+      text-align: right;
+      background: linear-gradient(180deg, rgba(168,85,247,0.22) 0%, rgba(59,130,246,0.06) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .sec-meta { flex: 1; }
+    .sec-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .sec-icon {
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      background: linear-gradient(135deg, rgba(168,85,247,0.18), rgba(59,130,246,0.12));
+      border: 1px solid rgba(168,85,247,0.25);
+      border-radius: 9px;
+      flex-shrink: 0;
+    }
+    .sec-tag {
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #a855f7;
+    }
+    .sec-title {
+      font-family: 'Sora', sans-serif;
+      font-weight: 700;
+      font-size: 1.65rem;
+      letter-spacing: -0.025em;
+      color: var(--t1);
+      margin-bottom: 10px;
+    }
+    .sec-desc {
+      font-size: 0.92rem;
+      color: var(--t2);
+      line-height: 1.75;
+      max-width: 580px;
+    }
+
+    /* ─── FEATURE GRID ───────────────────────────────────── */
+    .fg {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 10px;
+    }
+    .fg-3 { grid-template-columns: repeat(3, 1fr); }
+    .fg-2 { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 720px) { .fg-3,.fg-2 { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .fg-3,.fg-2,.fg { grid-template-columns: 1fr; } }
+
+    .fc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    }
+    .fc:hover {
+      background: var(--surface2);
+      border-color: var(--border2);
+      transform: translateY(-2px);
+    }
+    .fc-icon { font-size: 1.2rem; margin-bottom: 10px; }
+    .fc-title {
+      font-family: 'Sora', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--t1);
+      margin-bottom: 5px;
+    }
+    .fc-desc { font-size: 0.77rem; color: var(--t2); line-height: 1.6; }
+
+    /* ─── PIPELINE FLOW ──────────────────────────────────── */
+    .pipe-wrap {
+      overflow-x: auto;
+      padding-bottom: 12px;
+    }
+    .pipe {
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+      min-width: max-content;
+      padding: 4px 0;
+    }
+    .pipe-step { display: flex; flex-direction: column; align-items: center; }
+    .pipe-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      padding: 12px 18px;
+      border-radius: 12px;
+      min-width: 108px;
+      text-align: center;
+      border: 1px solid;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .pipe-node:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+    .pipe-node-e { font-size: 1.05rem; }
+    .pipe-node-l {
+      font-family: 'Sora', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      line-height: 1.3;
+    }
+    .pipe-node-s {
+      font-size: 0.6rem;
+      opacity: 0.65;
+      font-weight: 400;
+    }
+    .pipe-arr {
+      display: flex;
+      align-items: center;
+      padding: 0 6px;
+      padding-top: 18px;
+      color: var(--t3);
+      font-size: 0.9rem;
+    }
+    .pipe-note {
+      font-size: 0.62rem;
+      color: var(--t3);
+      text-align: center;
+      max-width: 96px;
+      line-height: 1.4;
+      margin-top: 8px;
+    }
+
+    /* node themes */
+    .pn-gray   { background:rgba(100,116,139,.14); border-color:rgba(100,116,139,.38); color:#94a3b8; }
+    .pn-amber  { background:rgba(245,158,11,.11);  border-color:rgba(245,158,11,.38);  color:#fbbf24; }
+    .pn-blue   { background:rgba(59,130,246,.11);  border-color:rgba(59,130,246,.38);  color:#60a5fa; }
+    .pn-indigo { background:rgba(99,102,241,.11);  border-color:rgba(99,102,241,.38);  color:#818cf8; }
+    .pn-cyan   { background:rgba(6,182,212,.11);   border-color:rgba(6,182,212,.38);   color:#22d3ee; }
+    .pn-teal   { background:rgba(20,184,166,.11);  border-color:rgba(20,184,166,.38);  color:#2dd4bf; }
+    .pn-green  { background:rgba(16,185,129,.11);  border-color:rgba(16,185,129,.38);  color:#34d399; }
+    .pn-red    { background:rgba(239,68,68,.11);   border-color:rgba(239,68,68,.38);   color:#f87171; }
+    .pn-purple { background:rgba(168,85,247,.11);  border-color:rgba(168,85,247,.38);  color:#c084fc; }
+
+    /* partial-received split indicator */
+    .pipe-or {
+      font-size: 0.6rem;
+      color: var(--t3);
+      font-style: italic;
+      padding: 0 2px;
+      padding-top: 18px;
+    }
+    .pipe-cancel-row {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding-left: 2px;
+    }
+    .pipe-cancel-note {
+      font-size: 0.65rem;
+      color: var(--t3);
+      margin-left: 8px;
+    }
+
+    /* ─── INFO LIST ──────────────────────────────────────── */
+    .il { display: flex; flex-direction: column; gap: 0; }
+    .il-row {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .il-row:last-child { border-bottom: none; }
+    .il-icon {
+      width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.88rem;
+      background: rgba(168,85,247,0.1);
+      border-radius: 8px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .il-t { font-size: 0.83rem; font-weight: 600; color: var(--t1); margin-bottom: 3px; }
+    .il-d { font-size: 0.77rem; color: var(--t2); line-height: 1.55; }
+
+    /* ─── CHIPS / TAGS ───────────────────────────────────── */
+    .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; }
+    .chip {
+      font-size: 0.7rem;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--t2);
+      font-family: 'DM Mono', monospace;
+    }
+    .chip-purple { background:rgba(168,85,247,.1); border-color:rgba(168,85,247,.3); color:#c084fc; }
+    .chip-blue   { background:rgba(59,130,246,.1);  border-color:rgba(59,130,246,.3);  color:#60a5fa; }
+    .chip-green  { background:rgba(16,185,129,.1);  border-color:rgba(16,185,129,.3);  color:#34d399; }
+    .chip-amber  { background:rgba(245,158,11,.1);  border-color:rgba(245,158,11,.3);  color:#fbbf24; }
+    .chip-red    { background:rgba(239,68,68,.1);   border-color:rgba(239,68,68,.3);   color:#f87171; }
+
+    /* ─── ALERT BLOCK ────────────────────────────────────── */
+    .alert-pipe {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .alert-row { display: flex; align-items: center; gap: 12px; }
+    .alert-src {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      min-width: 172px;
+    }
+    .alert-channels { display: flex; flex-wrap: wrap; gap: 8px; }
+    .alert-ch {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.73rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 9999px;
+    }
+
+    /* ─── TWO-COL ────────────────────────────────────────── */
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 700px) { .two { grid-template-columns: 1fr; } }
+
+    /* ─── PANEL (bordered box) ───────────────────────────── */
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 24px;
+    }
+    .panel-title {
+      font-family: 'Sora', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--t3);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .panel-title::before {
+      content: '';
+      width: 3px; height: 14px;
+      background: linear-gradient(180deg,#a855f7,#3b82f6);
+      border-radius: 2px;
+      display: block;
+    }
+
+    /* ─── SCROLL FADE ────────────────────────────────────── */
+    .fade {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .fade.vis { opacity: 1; transform: none; }
+
+    /* ─── FOOTER ─────────────────────────────────────────── */
+    .footer {
+      padding: 64px 0;
+      text-align: center;
+    }
+    .footer-logo {
+      font-family: 'Sora', sans-serif;
+      font-weight: 800;
+      font-size: 2.4rem;
+      letter-spacing: -0.05em;
+      background: linear-gradient(135deg, #c084fc, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+    }
+    .footer-meta { font-size: 0.75rem; color: var(--t3); letter-spacing: 0.06em; text-transform: uppercase; }
+
+    /* ─── PRINT ──────────────────────────────────────────── */
+    @media print {
+      body { background:#fff; color:#1e293b; }
+      .nav,.orb,.hero-bg { display:none; }
+      .hero { min-height:auto; padding:40px 0 20px; }
+      .glass,.glass-sm,.fc,.panel {
+        background:#f8fafc;
+        border-color:#e2e8f0;
+        backdrop-filter:none;
+      }
+      .gt, .gt-green, .nav-brand, .footer-logo, .hero-title {
+        -webkit-text-fill-color:unset;
+        background:none;
+        color:#7c3aed;
+      }
+      .sec { break-inside:avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════ NAV ═══════════════════════════════ -->
+<nav class="nav">
+  <a href="#top" class="nav-brand">Cella</a>
+  <div class="nav-divider"></div>
+  <div class="nav-links">
+    <a href="#items"       class="nav-link">Items</a>
+    <a href="#stock"       class="nav-link">Stock Ops</a>
+    <a href="#locations"   class="nav-link">Locations</a>
+    <a href="#catalog"     class="nav-link">Sections &amp; Units</a>
+    <a href="#lots"        class="nav-link">Lot / FEFO</a>
+    <a href="#barcodes"    class="nav-link">Barcodes</a>
+    <a href="#suppliers"   class="nav-link">Suppliers</a>
+    <a href="#orders"      class="nav-link">Purchase Orders</a>
+    <a href="#requisitions" class="nav-link">Requisitions</a>
+    <a href="#history"     class="nav-link">History</a>
+    <a href="#lowstock"    class="nav-link">Low-Stock Alerts</a>
+    <a href="#expiry"      class="nav-link">Expiry Alerts</a>
+  </div>
+  <span class="nav-ver">v5.1 · 2026</span>
+</nav>
+
+<!-- ═══════════════════ HERO ══════════════════════════════ -->
+<section class="hero" id="top">
+  <div class="hero-bg">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+  </div>
+  <div class="wrap hero-inner">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-dot"></div>
+      Inventory Cellabon · Feature Guide
+    </div>
+    <h1 class="hero-title">
+      <span class="gt">Complete</span><br/>
+      <span class="gt">Inventory</span>
+      <span class="line2">from items to procurement to fulfilment</span>
+    </h1>
+    <p class="hero-sub">
+      A modular, multi-tenant inventory system — 12 integrated modules covering
+      the full lifecycle of stock: catalog, procurement, internal requests,
+      FEFO lot tracking, and intelligent alerts.
+    </p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-n">12</div>
+        <div class="hero-stat-l">Modules</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-n">15</div>
+        <div class="hero-stat-l">DB Tables</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-n">80+</div>
+        <div class="hero-stat-l">API Endpoints</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-n">25</div>
+        <div class="hero-stat-l">Services</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 01 · ITEMS ════════════════════════ -->
+<section class="sec fade" id="items">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">01</div>
+      <div class="sec-meta">
+        <div class="sec-eyebrow">
+          <div class="sec-icon">📦</div>
+          <span class="sec-tag">Catalog Core</span>
+        </div>
+        <h2 class="sec-title">Items &amp; Catalog</h2>
+        <p class="sec-desc">
+          The central entity of the inventory. Every item carries full product metadata,
+          pricing, image, stock thresholds, and supports soft-activation — meaning nothing
+          is ever hard-deleted.
+        </p>
+      </div>
+    </div>
+
+    <div class="fg" style="margin-bottom:16px;">
+      <div class="fc">
+        <div class="fc-icon">✏️</div>
+        <div class="fc-title">CRUD Operations</div>
+        <div class="fc-desc">Create, read, update items. Deactivate / reactivate preserves all history. Paginated listing with advanced filters.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">🖼</div>
+        <div class="fc-title">Image Upload</div>
+        <div class="fc-desc">JPEG, PNG, WebP up to 10 MB. Stored in Firebase Storage (unencrypted for direct URL embedding).</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">💰</div>
+        <div class="fc-title">Pricing</div>
+        <div class="fc-desc">Cost price and sell price per item. Both toggleable via config. Stored with 3-decimal numeric precision.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">🔔</div>
+        <div class="fc-title">Stock Thresholds</div>
+        <div class="fc-desc">Min and max stock level per item. Automatic low-stock alert trigger when quantity ≤ min threshold.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">🏷</div>
+        <div class="fc-title">SKU &amp; Identifiers</div>
+        <div class="fc-desc">Optional SKU field. Items belong to a section (category) and a unit of measure for display consistency.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">🔄</div>
+        <div class="fc-title">Soft Activation</div>
+        <div class="fc-desc">Items toggle between active / inactive. No data loss — stock entries, barcodes, and movement history retained.</div>
+      </div>
+    </div>
+
+    <div class="chips">
+      <span class="chip chip-purple">invitm_ prefix</span>
+      <span class="chip chip-blue">section_id FK</span>
+      <span class="chip chip-blue">unit_id FK</span>
+      <span class="chip chip-green">image_url nullable</span>
+      <span class="chip">min_stock_level</span>
+      <span class="chip">max_stock_level</span>
+      <span class="chip">cost_price</span>
+      <span class="chip">sell_price</span>
+      <span class="chip">is_active toggle</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 02 · STOCK OPS ════════════════════ -->
+<section class="sec fade" id="stock">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">02</div>
+      <div class="sec-meta">
+        <div class="sec-eyebrow">
+          <div class="sec-icon">⚖️</div>
+          <span class="sec-tag">Warehouse Operations</span>
+        </div>
+        <h2 class="sec-title">Stock Operations</h2>
+        <p class="sec-desc">
+          Six atomic operations — every single one writes an immutable movement record
+          to the audit trail. Stock is tracked at the <em>item × location × lot</em> level.
+        </p>
+      </div>
+    </div>
+
+    <div class="fg fg-3">
+      <div class="fc">
+        <div class="fc-icon">➕</div>
+        <div class="fc-title">Adjust</div>
+        <div class="fc-desc">Add or remove arbitrary quantity from a specific item + location (+ optional lot). Supports positive and negative values.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">🔀</div>
+        <div class="fc-title">Transfer</div>
+        <div class="fc-desc">Move stock from one location to another atomically. Both the outbound and inbound movements are recorded.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">🔢</div>
+        <div class="fc-title">Count</div>
+        <div class="fc-desc">Physical count reconciliation — sets stock to exact counted value. Records the delta as a COUNT movement.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">🔒</div>
+        <div class="fc-title">Reserve</div>
+        <div class="fc-desc">Soft-hold stock for a pending commitment. Increases reserved field; available = quantity − reserved.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">🔓</div>
+        <div class="fc-title">Release</div>
+        <div class="fc-desc">Free previously reserved stock back to available pool. Decrements reserved without changing total quantity.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">📋</div>
+        <div class="fc-title">Place Order</div>
+        <div class="fc-desc">Marks stock as on_order (non-blocking). Triggers ORDER_PLACED movement. Reversed via cancel or fulfilled via receive.</div>
+      </div>
+    </div>
+
+    <div class="chips" style="margin-top:20px;">
+      <span class="chip chip-purple">IN · OUT · ADJUSTMENT</span>
+      <span class="chip chip-blue">TRANSFER · COUNT</span>
+      <span class="chip chip-amber">RESERVE · RELEASE</span>
+      <span class="chip chip-green">ORDER_PLACED · ORDER_CANCELLED</span>
+      <span class="chip">Every op → movement record</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 03 · LOCATIONS ════════════════════ -->
+<section class="sec fade" id="locations">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">03</div>
+      <div class="sec-meta">
+        <div class="sec-eyebrow">
+          <div class="sec-icon">📍</div>
+          <span class="sec-tag">Warehouse Layout</span>
+        </div>
+        <h2 class="sec-title">Multi-Location Support</h2>
+        <p class="sec-desc">
+          Stock is tracked per-item per-location. Each tenant can define multiple
+          physical storage areas. One location is flagged as the default.
+        </p>
+      </div>
+    </div>
+
+    <div class="two">
+      <div class="panel">
+        <div class="panel-title">Location Features</div>
+        <div class="il">
+          <div class="il-row">
+            <div class="il-icon">🏢</div>
+            <div>
+              <div class="il-t">Multiple Locations</div>
+              <div class="il-d">Define warehouses, shelves, or any physical area. Each has a name, optional address, and default flag.</div>
+            </div>
+          </div>
+          <div class="il-row">
+            <div class="il-icon">📊</div>
+            <div>
+              <div class="il-t">Per-Location Stock View</div>
+              <div class="il-d">Query available, reserved, and on-order quantities broken down by location for any item.</div>
+            </div>
+          </div>
+          <div class="il-row">
+            <div class="il-icon">🔁</div>
+            <div>
+              <div class="il-t">Stock Transfers</div>
+              <div class="il-d">Atomic transfer between locations — single API call creates both an outbound and inbound movement record.</div>
+            </div>
+          </div>
+          <div class="il-row">
+            <div class="il-icon">⭐</div>
+            <div>
+              <div class="il-t">Default Location</div>
+              <div class="il-d">One location per tenant is flagged as the default — used as fallback in forms and order receiving flows.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Stock Entry Model</div>
+        <div class="il">
+          <div class="il-row">
+            <div class="il-icon">🗂</div>
+            <div>
+              <div class="il-t">item × location × lot</div>
+              <div class="il-d">Each <span class="chip" style="padding:2px 8px;font-size:.72rem">InventoryStockEntry</span> row tracks one item at one location, optionally for one lot.</div>
+            </div>
+          </div>
+          <div class="il-row">
+            <div class="il-icon">🔢</div>
+            <div>
+              <div class="il-t">Three Quantities</div>
+              <div class="il-d"><code style="font-family:'DM Mono',monospace;font-size:.78rem;color:#c084fc">quantity</code> — physical total<br><code style="font-family:'DM Mono',monospace;font-size:.78rem;color:#fbbf24">reserved</code> — soft-held<br><code style="font-family:'DM Mono',monospace;font-size:.78rem;color:#34d399">available</code> — quantity − reserved</div>
+            </div>
+          </div>
+          <div class="il-row">
+            <div class="il-icon">🎯</div>
+            <div>
+              <div class="il-t">Unique Constraints</div>
+              <div class="il-d">Partial unique index per (tenant, item, location) when no lot. Separate index per (tenant, location, lot) when lot present.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 04 · SECTIONS & UNITS ════════════ -->
+<section class="sec fade" id="catalog">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">04</div>
+      <div class="sec-meta">
+        <div class="sec-eyebrow">
+          <div class="sec-icon">🗂</div>
+          <span class="sec-tag">Organisation</span>
+        </div>
+        <h2 class="sec-title">Sections &amp; Units of Measure</h2>
+        <p class="sec-desc">
+          Two foundational building blocks: sections organise items into coloured categories,
+          units standardise quantities across the system with optional conversion factors.
+        </p>
+      </div>
+    </div>
+
+    <div class="two">
+      <div class="panel">
+        <div class="panel-title">Sections (Categories)</div>
+        <div class="il">
+          <div class="il-row">
+            <div class="il-icon">🎨</div>
+            <div>
+              <div class="il-t">Colour &amp; Icon</div>
+              <div class="il-d">Each section carries a colour and icon for visual identification across the UI and alert routing.</div>
+            </div>
+          </div>
+          <div class="il-row">
+            <div class="il-icon">🔢</div>
+            <div>
+              <div class="il-t">Sort Order &amp; Item Count</div>
+              <div class="il-d">Sections carry a sort_order for custom ordering. The list endpoint returns live item_count per section.</div>
+            </div>
+          </div>
+          <div class="il-row">
+            <div class="il-icon">👥</div>
+            <div>
+              <div class="il-t">Section Subscribers</div>
+              <div class="il-d">Users can subscribe to specific sections to receive low-stock and expiry alerts only for items in those sections.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Units of Measure</div>
+        <div class="il">
+          <div class="il-row">
+            <div class="il-icon">⚖️</div>
+            <div>
+              <div class="il-t">Custom Units</div>
+              <div class="il-d">Define any unit — kg, pieces, litre, box. Each has a name, symbol, and category (weight, volume, count…).</div>
+            </div>
+          </div>
+          <div class="il-row">
+            <div class="il-icon">🔄</div>
+            <div>
+              <div class="il-t">Conversion Factors</div>
+              <div class="il-d">Optional base_unit_id + conversion_factor enables consistent cross-unit quantity comparisons.</div>
+            </div>
+          </div>
+          <div class="il-row">
+            <div class="il-icon">🏷</div>
+            <div>
+              <div class="il-t">Display Symbol</div>
+              <div class="il-d">The unit symbol is snapshotted onto requisition items at creation for immutable display even if the unit later changes.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 05 · LOT / FEFO ══════════════════ -->
+<section class="sec fade" id="lots">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">05</div>
+      <div class="sec-meta">
+        <div class="sec-eyebrow">
+          <div class="sec-icon">📅</div>
+          <span class="sec-tag">FEFO Tracking</span>
+        </div>
+        <h2 class="sec-title">Lot / Batch &amp; FEFO</h2>
+        <p class="sec-desc">
+          Track stock by lot number and expiration date. The system provides automatic
+          First-Expired-First-Out picking suggestions and atomic removal of expired lots.
+        </p>
+      </div>
+    </div>
+
+    <!-- FEFO flow -->
+    <div class="pipe-wrap" style="margin-bottom:32px;">
+      <div class="pipe">
+        <div class="pipe-step">
+          <div class="pipe-node pn-purple">
+            <div class="pipe-node-e">🆕</div>
+            <div class="pipe-node-l">Create Lot</div>
+            <div class="pipe-node-s">lot_number + expiry</div>
+          </div>
+          <div class="pipe-note">Admin only. Unique per item.</div>
+        </div>
+        <div class="pipe-arr">→</div>
+        <div class="pipe-step">
+          <div class="pipe-node pn-blue">
+            <div class="pipe-node-e">➕</div>
+            <div class="pipe-node-l">Add Stock</div>
+            <div class="pipe-node-s">per location</div>
+          </div>
+          <div class="pipe-note">Stock entry links lot_id</div>
+        </div>
+        <div class="pipe-arr">→</div>
+        <div class="pipe-step">
+          <div class="pipe-node pn-cyan">
+            <div class="pipe-node-e">🔍</div>
+            <div class="pipe-node-l">FEFO Query</div>
+            <div class="pipe-node-s">earliest expiry first</div>
+          </div>
+          <div class="pipe-note">Suggested allocations with quantities</div>
+        </div>
+        <div class="pipe-arr">→</div>
+        <div class="pipe-step">
+          <div class="pipe-node pn-teal">
+            <div class="pipe-node-e">📤</div>
+            <div class="pipe-node-l">Consume</div>
+            <div class="pipe-node-s">via stock op or requisition</div>
+          </div>
+          <div class="pipe-note">Movement records lot_id ref</div>
+        </div>
+        <div class="pipe-arr">→</div>
+        <div class="pipe-step">
+          <div class="pipe-node pn-red">
+            <div class="pipe-node-e">🗑</div>
+            <div class="pipe-node-l">Remove Expired</div>
+            <div class="pipe-node-s">atomic zero + delete</div>
+          </div>
+          <div class="pipe-note">EXPIRED movement per location, blocks if reserved</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fg fg-3">
+      <div class="fc">
+        <div class="fc-icon">📍</div>
+        <div class="fc-title">Multi-Location Distribution</div>
+        <div class="fc-desc">One lot can span multiple locations. Stock entry rows link to both a lot and a location.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">🔢</div>
+        <div class="fc-title">Hybrid Quantities</div>
+        <div class="fc-desc">Lot totals (total_quantity, total_reserved, available, is_expired) are computed via SQLAlchemy hybrid properties.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">🛡</div>
+        <div class="fc-title">Safe Deletion</div>
+        <div class="fc-desc">A lot can only be deleted when total_quantity == 0 and total_reserved == 0. Remove-expired blocks if reserved &gt; 0.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 06 · BARCODES ════════════════════ -->
+<section class="sec fade" id="barcodes">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">06</div>
+      <div class="sec-meta">
+        <div class="sec-eyebrow">
+          <div class="sec-icon">📷</div>
+          <span class="sec-tag">Scanning</span>
+        </div>
+        <h2 class="sec-title">Barcode Scanning</h2>
+        <p class="sec-desc">
+          Items support multiple barcodes with one flagged as primary.
+          Scanning works via device camera or an external USB/Bluetooth scanner.
+        </p>
+      </div>
+    </div>
+
+    <div class="fg fg-3">
+      <div class="fc">
+        <div class="fc-icon">📱</div>
+        <div class="fc-title">Camera Scanning</div>
+        <div class="fc-desc">Real-time camera feed decodes barcodes directly in the browser — no native app required.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">🔌</div>
+        <div class="fc-title">External Scanner</div>
+        <div class="fc-desc">USB / Bluetooth barcode guns are supported as keyboard-input devices — plug and use immediately.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">🏷</div>
+        <div class="fc-title">Multi-Barcode per Item</div>
+        <div class="fc-desc">Each item can carry any number of barcodes (EAN, QR, etc.). One is flagged as the primary barcode.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">🔎</div>
+        <div class="fc-title">Barcode Lookup</div>
+        <div class="fc-desc">A dedicated lookup endpoint resolves any registered barcode string to its full item record instantly.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">➕</div>
+        <div class="fc-title">Add / Remove</div>
+        <div class="fc-desc">Barcodes can be added or removed from an item at any time. Deletion requires the specific barcode ID.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">⭐</div>
+        <div class="fc-title">Primary Flag</div>
+        <div class="fc-desc">One barcode per item carries the is_primary flag, used as the default scan target and export identifier.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 07 · SUPPLIERS ═══════════════════ -->
+<section class="sec fade" id="suppliers">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">07</div>
+      <div class="sec-meta">
+        <div class="sec-eyebrow">
+          <div class="sec-icon">🤝</div>
+          <span class="sec-tag">Procurement</span>
+        </div>
+        <h2 class="sec-title">Supplier Management</h2>
+        <p class="sec-desc">
+          Manage external suppliers and link them to specific items with per-supplier
+          pricing. Supplier records feed directly into the purchase order system.
+        </p>
+      </div>
+    </div>
+
+    <div class="two">
+      <div class="panel">
+        <div class="panel-title">Supplier Records</div>
+        <div class="il">
+          <div class="il-row">
+            <div class="il-icon">🏢</div>
+            <div>
+              <div class="il-t">Full Contact Info</div>
+              <div class="il-d">Name (unique per tenant), email, phone, company identifier, notes, and active/inactive toggle.</div>
+            </div>
+          </div>
+          <div class="il-row">
+            <div class="il-icon">🔍</div>
+            <div>
+              <div class="il-t">Search &amp; Filter</div>
+              <div class="il-d">Paginated list with search and optional include-inactive flag for comprehensive supplier visibility.</div>
+            </div>
+          </div>
+          <div class="il-row">
+            <div class="il-icon">🔗</div>
+            <div>
+              <div class="il-t">Item Count</div>
+              <div class="il-d">Each supplier record returns a live item_count — how many inventory items are linked to this supplier.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Item–Supplier Links (Pricing)</div>
+        <div class="il">
+          <div class="il-row">
+            <div class="il-icon">💱</div>
+            <div>
+              <div class="il-t">Per-Supplier Pricing</div>
+              <div class="il-d">Each link stores supplier_price per base unit, supplier_item_code, and the supplier's own unit + quantity.</div>
+            </div>
+          </div>
+          <div class="il-row">
+            <div class="il-icon">📝</div>
+            <div>
+              <div class="il-t">Supplier Item Code</div>
+              <div class="il-d">Maps your internal item to the supplier's own catalogue reference code for accurate order lines.</div>
+            </div>
+          </div>
+          <div class="il-row">
+            <div class="il-icon">⚖️</div>
+            <div>
+              <div class="il-t">Unit Normalisation</div>
+              <div class="il-d">supplier_unit_quantity normalises supplier pack sizes to your base unit for consistent comparison and ordering.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 08 · PURCHASE ORDERS ═════════════ -->
+<section class="sec fade" id="orders">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">08</div>
+      <div class="sec-meta">
+        <div class="sec-eyebrow">
+          <div class="sec-icon">🛒</div>
+          <span class="sec-tag">Procurement Lifecycle</span>
+        </div>
+        <h2 class="sec-title">Purchase Orders</h2>
+        <p class="sec-desc">
+          A full eight-stage procurement lifecycle — from internal draft through supplier
+          delivery to completion, with PDF generation in English or Hebrew, approval
+          workflow, tax and discount handling, and lot assignment on receiving.
+        </p>
+      </div>
+    </div>
+
+    <!-- Main 8-stage flow -->
+    <div class="pipe-wrap" style="margin-bottom:20px;">
+      <div class="pipe">
+        <div class="pipe-step">
+          <div class="pipe-node pn-gray">
+            <div class="pipe-node-e">📝</div>
+            <div class="pipe-node-l">Draft</div>
+          </div>
+          <div class="pipe-note">Items, supplier, location, discount, tax</div>
+        </div>
+        <div class="pipe-arr">→</div>
+        <div class="pipe-step">
+          <div class="pipe-node pn-amber">
+            <div class="pipe-node-e">⏳</div>
+            <div class="pipe-node-l">Pending Approval</div>
+          </div>
+          <div class="pipe-note">Submitted for approver review</div>
+        </div>
+        <div class="pipe-arr">→</div>
+        <div class="pipe-step">
+          <div class="pipe-node pn-blue">
+            <div class="pipe-node-e">✅</div>
+            <div class="pipe-node-l">Approved</div>
+          </div>
+          <div class="pipe-note">Approver accepts order</div>
+        </div>
+        <div class="pipe-arr">→</div>
+        <div class="pipe-step">
+          <div class="pipe-node pn-indigo">
+            <div class="pipe-node-e">📤</div>
+            <div class="pipe-node-l">Sent</div>
+          </div>
+          <div class="pipe-note">PDF emailed to supplier</div>
+        </div>
+        <div class="pipe-arr">→</div>
+        <div class="pipe-step">
+          <div class="pipe-node pn-cyan">
+            <div class="pipe-node-e">📦</div>
+            <div class="pipe-node-l">Partially Received</div>
+          </div>
+          <div class="pipe-note">Some items delivered</div>
+        </div>
+        <div class="pipe-arr">→</div>
+        <div class="pipe-step">
+          <div class="pipe-node pn-teal">
+            <div class="pipe-node-e">📥</div>
+            <div class="pipe-node-l">Received</div>
+          </div>
+          <div class="pipe-note">All items delivered</div>
+        </div>
+        <div class="pipe-arr">→</div>
+        <div class="pipe-step">
+          <div class="pipe-node pn-green">
+            <div class="pipe-node-e">🎉</div>
+            <div class="pipe-node-l">Completed</div>
+          </div>
+          <div class="pipe-note">Invoice matched, closed</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cancelled branch -->
+    <div class="pipe-cancel-row">
+      <div class="pipe-node pn-red" style="min-width:auto;padding:8px 16px;display:inline-flex;flex-direction:row;align-items:center;gap:8px;">
+        <div class="pipe-node-e" style="font-size:.9rem;">🚫</div>
+        <div class="pipe-node-l" style="font-size:.68rem;">Cancelled</div>
+      </div>
+      <span class="pipe-cancel-note">Available from Draft, Pending Approval, Approved, or Sent — reverses on_order stock</span>
+    </div>
+
+    <div class="fg" style="margin-top:28px;">
+      <div class="fc">
+        <div class="fc-icon">📄</div>
+        <div class="fc-title">PDF Generation</div>
+        <div class="fc-desc">Sends a supplier-facing PDF in English (LTR) or Hebrew (RTL). Language configured per tenant.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">💸</div>
+        <div class="fc-title">Tax &amp; Discount</div>
+        <div class="fc-desc">Per-order discount_amount and tax_rate. Subtotal, tax_amount, and total computed and snapshotted.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">📸</div>
+        <div class="fc-title">Price Snapshots</div>
+        <div class="fc-desc">Line item unit_price is snapshotted at creation — price changes after ordering do not retroactively alter the PO.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">🏷</div>
+        <div class="fc-title">Lot Assignment on Receive</div>
+        <div class="fc-desc">During receiving, operators can assign a lot number and expiration date per line item directly in the receive form.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">👥</div>
+        <div class="fc-title">Approval Workflow</div>
+        <div class="fc-desc">Configurable approver list. If approval is not required the order skips straight to Approved automatically.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">📊</div>
+        <div class="fc-title">Variance Tracking</div>
+        <div class="fc-desc">Per-line price_variance between ordered and received. Order-level totalVariance summary for reconciliation.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 09 · REQUISITIONS ════════════════ -->
+<section class="sec fade" id="requisitions">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">09</div>
+      <div class="sec-meta">
+        <div class="sec-eyebrow">
+          <div class="sec-icon">📋</div>
+          <span class="sec-tag">Internal Requests</span>
+        </div>
+        <h2 class="sec-title">Internal Requisitions</h2>
+        <p class="sec-desc">
+          Employees request items from stock. Approvers review, then fulfill from specific
+          locations using FEFO-aware allocation — automatically consuming the earliest-expiring
+          lots first.
+        </p>
+      </div>
+    </div>
+
+    <!-- 4-stage flow -->
+    <div class="pipe-wrap" style="margin-bottom:20px;">
+      <div class="pipe">
+        <div class="pipe-step">
+          <div class="pipe-node pn-gray">
+            <div class="pipe-node-e">📝</div>
+            <div class="pipe-node-l">Draft</div>
+            <div class="pipe-node-s">REQ- number assigned</div>
+          </div>
+          <div class="pipe-note">Requester adds items + quantities. Editable.</div>
+        </div>
+        <div class="pipe-arr">→</div>
+        <div class="pipe-step">
+          <div class="pipe-node pn-amber">
+            <div class="pipe-node-e">🕐</div>
+            <div class="pipe-node-l">Pending Approval</div>
+            <div class="pipe-node-s">submitted for review</div>
+          </div>
+          <div class="pipe-note">Notification sent to configured approvers</div>
+        </div>
+        <div class="pipe-arr">→</div>
+        <div class="pipe-step">
+          <div class="pipe-node pn-green">
+            <div class="pipe-node-e">✅</div>
+            <div class="pipe-node-l">Fulfilled</div>
+            <div class="pipe-node-s">stock consumed atomically</div>
+          </div>
+          <div class="pipe-note">Per-location + per-lot consumption recorded</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cancelled + Rejected branches -->
+    <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:28px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="pipe-node pn-red" style="min-width:auto;padding:7px 14px;display:inline-flex;flex-direction:row;align-items:center;gap:7px;">
+          <span style="font-size:.85rem;">🚫</span>
+          <span class="pipe-node-l" style="font-size:.66rem;">Cancelled</span>
+        </div>
+        <span style="font-size:.65rem;color:var(--t3);">By requester — any time before fulfilment</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="pipe-node pn-red" style="min-width:auto;padding:7px 14px;display:inline-flex;flex-direction:row;align-items:center;gap:7px;">
+          <span style="font-size:.85rem;">❌</span>
+          <span class="pipe-node-l" style="font-size:.66rem;">Rejected</span>
+        </div>
+        <span style="font-size:.65rem;color:var(--t3);">By approver with rejection note — returns to requester</span>
+      </div>
+    </div>
+
+    <div class="two">
+      <div class="panel">
+        <div class="panel-title">Fulfillment Engine</div>
+        <div class="il">
+          <div class="il-row">
+            <div class="il-icon">🏭</div>
+            <div>
+              <div class="il-t">Stock Availability Check</div>
+              <div class="il-d">Before fulfilling, the system returns per-item availability broken down by location and lot, with suggested allocations.</div>
+            </div>
+          </div>
+          <div class="il-row">
+            <div class="il-icon">📅</div>
+            <div>
+              <div class="il-t">FEFO-Aware</div>
+              <div class="il-d">Suggested allocations automatically prioritise lots with the earliest expiration dates first across all locations.</div>
+            </div>
+          </div>
+          <div class="il-row">
+            <div class="il-icon">⚡</div>
+            <div>
+              <div class="il-t">Atomic Fulfilment</div>
+              <div class="il-d">The entire fulfill operation runs inside one database transaction — all locations consumed or nothing.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Approval Config</div>
+        <div class="il">
+          <div class="il-row">
+            <div class="il-icon">⚙️</div>
+            <div>
+              <div class="il-t">Configurable Approvers</div>
+              <div class="il-d">Tenant admins configure a list of user IDs as requisition approvers. Empty list = open approval policy.</div>
+            </div>
+          </div>
+          <div class="il-row">
+            <div class="il-icon">🔀</div>
+            <div>
+              <div class="il-t">Skip Approval Mode</div>
+              <div class="il-d">When requisitionApprovalRequired is false, submit moves the requisition directly to ready-to-fulfill state.</div>
+            </div>
+          </div>
+          <div class="il-row">
+            <div class="il-icon">🔔</div>
+            <div>
+              <div class="il-t">In-App Notifications</div>
+              <div class="il-d">Approvers notified on submission. Requester notified on fulfillment, rejection, or cancellation.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 10 · HISTORY ══════════════════════ -->
+<section class="sec fade" id="history">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">10</div>
+      <div class="sec-meta">
+        <div class="sec-eyebrow">
+          <div class="sec-icon">🕐</div>
+          <span class="sec-tag">Audit Trail</span>
+        </div>
+        <h2 class="sec-title">Movement History</h2>
+        <p class="sec-desc">
+          Every stock operation writes an immutable movement record.
+          The history view provides a fully filterable audit trail across all items,
+          locations, lots, and operation types.
+        </p>
+      </div>
+    </div>
+
+    <div class="two" style="margin-bottom:20px;">
+      <div class="panel">
+        <div class="panel-title">Movement Types</div>
+        <div class="chips" style="margin-top:0;">
+          <span class="chip chip-green">IN</span>
+          <span class="chip chip-red">OUT</span>
+          <span class="chip chip-blue">ADJUSTMENT</span>
+          <span class="chip chip-indigo" style="background:rgba(99,102,241,.1);border-color:rgba(99,102,241,.3);color:#818cf8;">TRANSFER</span>
+          <span class="chip chip-purple">COUNT</span>
+          <span class="chip chip-amber">RESERVE</span>
+          <span class="chip">RELEASE</span>
+          <span class="chip chip-cyan" style="background:rgba(6,182,212,.1);border-color:rgba(6,182,212,.3);color:#22d3ee;">ORDER_PLACED</span>
+          <span class="chip chip-red">ORDER_CANCELLED</span>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Movement Reasons</div>
+        <div class="chips" style="margin-top:0;">
+          <span class="chip">PURCHASE · SALE · RETURN</span>
+          <span class="chip">DAMAGED · EXPIRED · LOST</span>
+          <span class="chip chip-blue">ADJUSTMENT · TRANSFER · COUNT</span>
+          <span class="chip chip-green">ORDER_RECEIVED · ORDER_CANCELLED</span>
+          <span class="chip chip-purple">INTERNAL_REQUISITION</span>
+          <span class="chip">OTHER</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="fg fg-3">
+      <div class="fc">
+        <div class="fc-icon">🔎</div>
+        <div class="fc-title">Advanced Filtering</div>
+        <div class="fc-desc">Filter by item, location, lot, movement type, reason, and date range. Filters are URL-shareable.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">📊</div>
+        <div class="fc-title">Before / After Quantities</div>
+        <div class="fc-desc">Every movement records quantity_before and quantity_after for complete change visibility.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">🏷</div>
+        <div class="fc-title">Lot References</div>
+        <div class="fc-desc">Lot-associated movements carry a lot_id FK — enabling full traceability from lot to every stock change it produced.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 11 · LOW-STOCK ALERTS ════════════ -->
+<section class="sec fade" id="lowstock">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">11</div>
+      <div class="sec-meta">
+        <div class="sec-eyebrow">
+          <div class="sec-icon">⚠️</div>
+          <span class="sec-tag">Intelligent Alerts</span>
+        </div>
+        <h2 class="sec-title">Low-Stock Alerts</h2>
+        <p class="sec-desc">
+          Automatic threshold monitoring — the moment stock drops at or below an item's
+          minimum level, targeted alerts fire across in-app, email, and SMS channels.
+        </p>
+      </div>
+    </div>
+
+    <div class="alert-pipe" style="margin-bottom:28px;">
+      <div class="alert-row">
+        <div class="alert-src" style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:#fbbf24;">
+          <span style="font-size:1.1rem;">📉</span>
+          Stock ≤ min_stock_level
+        </div>
+        <span style="color:var(--t3);padding:0 8px;font-size:1rem;">→</span>
+        <div class="alert-channels">
+          <div class="alert-ch" style="background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.3);color:#c084fc;">
+            <span>🔔</span> In-App notification
+          </div>
+          <div class="alert-ch" style="background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.3);color:#60a5fa;">
+            <span>📧</span> Email (Mailjet)
+          </div>
+          <div class="alert-ch" style="background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);color:#34d399;">
+            <span>💬</span> SMS (InfoRu)
+          </div>
+        </div>
+      </div>
+      <div class="alert-row">
+        <div class="alert-src" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#f87171;">
+          <span style="font-size:1.1rem;">📦</span>
+          Stock reaches zero
+        </div>
+        <span style="color:var(--t3);padding:0 8px;font-size:1rem;">→</span>
+        <div class="alert-channels">
+          <div class="alert-ch" style="background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#f87171;">
+            <span>🚨</span> Out-of-stock in-app alert
+          </div>
+          <div class="alert-ch" style="background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.3);color:#60a5fa;">
+            <span>📧</span> Email escalation
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fg fg-3">
+      <div class="fc">
+        <div class="fc-icon">👥</div>
+        <div class="fc-title">Section Subscribers</div>
+        <div class="fc-desc">Users subscribe to specific sections — only receiving alerts for items in the sections they care about.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">⚙️</div>
+        <div class="fc-title">Messaging Cellabon</div>
+        <div class="fc-desc">Low-stock alert delivery is owned by the Messaging cellabon. Enabled via the enableInventoryAlerts toggle.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">🔕</div>
+        <div class="fc-title">Configurable</div>
+        <div class="fc-desc">Low-stock alerts are toggleable per tenant. Config metadata is cross-displayed in both Inventory and Messaging config forms.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 12 · EXPIRY ALERTS ═══════════════ -->
+<section class="sec fade" id="expiry">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">12</div>
+      <div class="sec-meta">
+        <div class="sec-eyebrow">
+          <div class="sec-icon">📆</div>
+          <span class="sec-tag">Scheduled Monitoring</span>
+        </div>
+        <h2 class="sec-title">Expiry Alerts</h2>
+        <p class="sec-desc">
+          A daily cron-driven system that identifies lots nearing or past expiration,
+          then delivers batched digest notifications. Firestore indexing ensures only
+          tenants with expiring lots are checked each day.
+        </p>
+      </div>
+    </div>
+
+    <!-- Expiry flow -->
+    <div class="pipe-wrap" style="margin-bottom:28px;">
+      <div class="pipe">
+        <div class="pipe-step">
+          <div class="pipe-node pn-purple">
+            <div class="pipe-node-e">⏰</div>
+            <div class="pipe-node-l">Daily Cron</div>
+            <div class="pipe-node-s">QStash schedule</div>
+          </div>
+          <div class="pipe-note">Managed by ExpiryScheduleService</div>
+        </div>
+        <div class="pipe-arr">→</div>
+        <div class="pipe-step">
+          <div class="pipe-node pn-indigo">
+            <div class="pipe-node-e">🗂</div>
+            <div class="pipe-node-l">Firestore Index</div>
+            <div class="pipe-node-s">earliest_expiration per tenant</div>
+          </div>
+          <div class="pipe-note">Skips tenants with no upcoming expiries</div>
+        </div>
+        <div class="pipe-arr">→</div>
+        <div class="pipe-step">
+          <div class="pipe-node pn-amber">
+            <div class="pipe-node-e">🔍</div>
+            <div class="pipe-node-l">Query Expiring Lots</div>
+            <div class="pipe-node-s">per-tenant batch</div>
+          </div>
+          <div class="pipe-note">Finds lots expiring within alert window</div>
+        </div>
+        <div class="pipe-arr">→</div>
+        <div class="pipe-step">
+          <div class="pipe-node pn-blue">
+            <div class="pipe-node-e">📊</div>
+            <div class="pipe-node-l">Build Digest</div>
+            <div class="pipe-node-s">grouped by item / lot</div>
+          </div>
+          <div class="pipe-note">Single message per recipient</div>
+        </div>
+        <div class="pipe-arr">→</div>
+        <div class="pipe-step">
+          <div class="pipe-node pn-green">
+            <div class="pipe-node-e">📨</div>
+            <div class="pipe-node-l">Dispatch</div>
+            <div class="pipe-node-s">email + SMS + in-app</div>
+          </div>
+          <div class="pipe-note">Via Messaging cellabon channels</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fg fg-3">
+      <div class="fc">
+        <div class="fc-icon">⚡</div>
+        <div class="fc-title">Efficient Targeting</div>
+        <div class="fc-desc">ExpiryTrackingService maintains a Firestore index of earliest_expiration per tenant — the cron only hits tenants that need it.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">📬</div>
+        <div class="fc-title">Digest Format</div>
+        <div class="fc-desc">Recipients receive one batched digest message listing all expiring lots — not one message per lot.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">🔗</div>
+        <div class="fc-title">Cross-Cellabon</div>
+        <div class="fc-desc">Expiry alerts are enabled via the Messaging cellabon's enableExpiryAlerts toggle, mirroring the low-stock alert pattern.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-logo">cella</div>
+  <div class="footer-meta">Inventory Cellabon · Version 5.1.0 · March 2026 · Confidential</div>
+</footer>
+
+<!-- ═══════════════════ JS ════════════════════════════════ -->
+<script>
+  // ── Scroll spy ──────────────────────────────────────────
+  const links = document.querySelectorAll('.nav-link');
+  const sections = document.querySelectorAll('.sec, .hero');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.getAttribute('id');
+        links.forEach(l => {
+          l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  sections.forEach(s => io.observe(s));
+
+  // ── Fade-in on scroll ────────────────────────────────────
+  const fadeIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('vis');
+        fadeIO.unobserve(e.target);
+      }
+    });
+  }, { rootMargin: '0px 0px -80px 0px' });
+  document.querySelectorAll('.fade').forEach(el => fadeIO.observe(el));
+</script>
+</body>
+</html>
